@@ -6,10 +6,10 @@ var res=document.getElementById('result');
 
 var clr=document.getElementById('clear-button');
 clr.addEventListener('click',function(){
-    res.value=''
+    res.value='';
 });
 var enterBtn=document.getElementById('enterBtn');
-var currentNum=0;
+var currentNum='';
 var currentOp='';
 
 
@@ -102,46 +102,56 @@ buttonDiv.addEventListener('click',function(){
 function valfun(value) {
     if (value === '+' || value === '-' || value === '*' || value === '/') {
         if (currentNum !== '') {
+            console.log(`current number is${currentNum}`);
             // If a number is already entered, store it and the operator
             if (currentOp !== '') {
                 calculateResult(); // Calculate the result if there's a pending operator
             }
             currentOp = value;
             console.log(currentOp)
-            res.value += value;
+            res.value = currentNum + value;
+            currentNum = ''; 
         }
     } else {
-        currentNum = value;
-        console.log(currentNum);
+        currentNum += value;
         res.value += value;
+        console.log('current number is1=',currentNum);
+        
     }
 }
 
 function calculateResult() {
-    var number1 = parseFloat(res.value);
-    console.log(`the number 1 is${number1}`)
-    var number2 = parseFloat(currentNum);
-    console.log(`the number 2 is${number2}`)
-    var result;
+    
+   
     if (currentNum !== '' && currentOp !== '') {
+        console.log('inside calculate function current num',parseInt(currentNum));
+        var result;
+        var number1 = parseFloat(res.value.split(currentOp));
+        console.log(`number 1 is${number1}`);
+        var number2 = parseFloat(currentNum);
+        console.log(`number 2 is ${number2}`);
       
 
         switch (currentOp) {
             case '+':
-                result = number1 + number2;
+                result =number1 + number2;
+                console.log(`result of addition =${result}`);
                 break;
             case '-':
-                result = number1 - number2;
+                result = number1- number2;
+                console.log(`result subtraction =${result}`);
                 break;
             case '*':
-                result = number1 * number2;
+                result =number1  * number2;
+                console.log(`result  multiplication =${result}`);
                 break;
             case '/':
                 if (number2 === 0) {
                     res.value = 'Error';
                     return;
                 }
-                result = number1 / number2;
+                result = number1  / number2;
+                console.log(`result results nof dividion =${result}`);
                 break;
             default:
                 break;
@@ -150,12 +160,21 @@ function calculateResult() {
         res.value = result;
         console.log(res.value)
         currentNum = result;
-        console.log(`current number is ${currentNum}`);
+        console.log(`current number is after update ${currentNum}`);
         currentOp = '';
     }
 }
 
 enterBtn.addEventListener('click', calculateResult);
+
+
+
+ 
+
+    
+
+
+
 
 
 
