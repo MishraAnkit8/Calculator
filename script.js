@@ -11,6 +11,8 @@ clr.addEventListener('click',function(){
 var enterBtn=document.getElementById('enterBtn');
 var currentNum='';
 var currentOp='';
+var dotBtn ='';
+
 
 
 
@@ -77,9 +79,11 @@ button9.addEventListener('click',function(){
 buttonZero.addEventListener('click',function(){
     valfun(0);
 });
-buttonDot.addEventListener('click',function(){
+ buttonDot.addEventListener('click',function(){
     valfun('.');
 });
+
+
 
 buttonSub.addEventListener('click',function(){
     valfun('-');
@@ -97,28 +101,54 @@ buttonDiv.addEventListener('click',function(){
 });
 
 
+
 // this function is used for diplaying entered button on displayting screen
 
 function valfun(value) {
-    if (value === '+' || value === '-' || value === '*' || value === '/') {
+    if (value === '+' || value === '-' || value === '*' || value === '/'  ) {
         if (currentNum !== '') {
             console.log(`current number is${currentNum}`);
             // If a number is already entered, store it and the operator
             if (currentOp !== '') {
                 calculateResult(); // Calculate the result if there's a pending operator
             }
+            
+           
             currentOp = value;
             console.log(currentOp)
+            //updating res window
             res.value = currentNum + value;
+            
+            console.log('res.value==',res.value);
             currentNum = ''; 
+            dotBtn = false;
         }
-    } else {
+       
+    }
+    
+
+    else{ // for resolution of using dot 
+        if (value === '.') {
+            // Check if a dot has already been used in the current number
+            if (!dotBtn) {
+                // If no dot has been used, add the dot
+                currentNum += value;
+                res.value += value;
+                dotBtn = true;
+            }
+        }
+        else{
+
+        
         currentNum += value;
         res.value += value;
         console.log('current number is1=',currentNum);
+        }
         
-    }
+    
 }
+}
+
 
 function calculateResult() {
     
@@ -169,18 +199,10 @@ enterBtn.addEventListener('click', calculateResult);
 
 
 
+
  
 
     
-
-
-
-
-
-
- 
-
- 
 
 
 
