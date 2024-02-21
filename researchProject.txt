@@ -1,0 +1,384 @@
+project structure
+
+research ====
+			|
+			|--app.js ==>>> here we will initialize our views router env files public folder css 
+			|
+			|--public-----|
+			|			  |----css
+			|			  |---js
+			|			  |---images
+			|
+			|
+			|--utils----|
+			|			|
+			|			|------error
+			|					|
+			|					|
+			|					--->CustomError.js -- here we will provide custom error massage 
+			|					|
+			|					|
+			|					--->error.handler.js -- for handling the error we will define here 
+			|
+			|
+			|
+			|
+			|--multer.js --- for storing uploading file and documents
+			|
+			|
+			|--config---
+			|			|
+			|			|---->>db-config.js for database configuration
+			|			|
+			|			|--->>db-poop-manager.js --->> for making connection of db pool
+			|
+			|
+			|--database --->>
+			|				|
+			|				|-->> tables.sql
+			|				|
+			|				|-->>execute sql query db.connect()
+			|
+			|
+			|
+			|
+			|-------src
+			|		|
+			|		|---------controller
+			|		|
+			|		|--------service ===>> for business logic
+			|		|
+			|		|--------models ===>> for databse ofthings like insert,update,select,delete these query we will write inside side our models
+			|		|
+			|		|-------middlware ===>> here we will define middleware function 
+			|		|
+			|		|----routes ===>> here we will routing point means endpoint for fetching api
+			|		|
+			|		|-----view ===>> template view like .ejs or .html template 
+			|				|
+			|				|--->>partials ===>> here we will splite our and write some common code which will use for all <% partials/filename %>
+			|
+			|
+			|
+			|
+			|
+			|-------.env---->port and other things like db name port and some others
+			|
+			|
+			|-----uploads---->> here images file documents will store
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			|
+			
+
+
+
+
+1 ==>>>Update multiple files  file updation when we are using multiple file on that time some file update wher file are exist 
+in view check if file is ther then append that file with formData otherwise in else block make that file null and append with formData
+in controller store files in a array pass that array to service from service to models in modal 
+
+
+download file completed
+breadcumbs completed 
+================================================================================================
+validation completed 
+================================================================================================
+
+================================================================
+pagination completed 
+========================================================================
+
+how to fix without refresh i want download file when i click specific file
+
+drop down list 
+
+romev next and prev button if data les then target data 
+
+how to upload multiple file from one input tag
+
+to use fetched data we can use pass daat as a argument in function
+what data is comming from fetch api we can use that data we can store that value in function and pass that data as argument
+why we getting network error how to resolve it
+
+==============================How to upload multiple files in node js =====>>>>>============================
+
+in frontend ===>>>>
+<input type="file" id="input-id" multiple>
+
+const inputId= document.getElementById('input-id');
+const files = inputId.files;
+for(let i =0 ; i<= files.lenght-1; i++){
+	formData.append('filename' , files[i].name)
+	}
+	
+in routes upaload.array('filename', 5) ==> here now files treated as array and here 5 means it will accept 5 file only 
+in service ===>>> fileString will be separate by ',' so in time of insertion we will join ',' and in time of download we will separate that file means split by comma;
+now in out service we will strore file original name as a string that string we will sent to database for insert that recored as string;
+
+multiple file uploading completed;
+================================================================================================================
+1 => How to upload multiple file if we have multiple input tags =====>>>
+For this we will follow same process like sing files <input type="file" id="input-id" multiple>
+base on id we will select input fields
+here we will store dataFilesArray in array how many input fileds are there we will store in an array.
+ 
+NOTE ==>> here each input fields also treated as an array becuase we are uploading multiple file in one input fields,
+		 so dataFilesArray is parent array  and input.files is chaild array;
+2 > Make another an  array  keyNameArray in this array we will store key name for each separate files aray  so this key we use 
+    for appending value into formData base on this key we will alos store file in our upload folder by using multer	;
+
+3 > in routing point we will write 
+	upload.fields([
+		{ name: 'keyName', maxCount: 5 },
+		{ name: 'fdpProgramFile', maxCount: 5 },
+		{ name: 'workShopFile', maxCount: 5 },
+		{ name: 'invitingFacultyFile', maxCount: 5 },
+		{ name: 'programOrientationFile', maxCount: 5 }	
+		]);
+		
+		now routing poing work perfectly;
+		
+4 > in controller send req.files into service 
+
+NOTE ::: We will write our  business related logic in our service 
+
+5> In service we will make uor fil as a string and this we will send into our database for insert the reccord 
+
+6 > store all files as a string with comma add value so when we need we will split this comma for file origin name of file 
+7 > in case of downloading we will spilt this file name by commna store an array and afre using loop assigning value as filename so that button   
+    related all files we will download;
+
+
+==========>>>>>>>>>>>how to download related id all files  ========>>>>>>>>>>>>>>>>>>>>>>;
+we will get data from button by using button.getAttribute('data-filename');
+here we will split(',') button.getAttribute('data-filename') this data and stor in array 
+based on comma we will spilt that string in array
+there we will use for loop in array and stote this  loop iteration value in in filename
+so wit will be downloaded;
+
+===========================================================================================
+
+file data type make varchar(255) changed table datatypt of book chapter from 50 to 255 which contains files;
+file data type make varchar(255) changed table datatypt of book chapter from 50 to 255 which contains files;
+
+=============================================================================================================================
+Chronicle Edition  ====>>>>
+For Chronicle edition we will use any editor this will look like as we are writing a block 
+1. chronicle edition simple like wehow we will write a blog by using editor.
+2. initialize ck editor based on there id's or class.
+3 if have multiple id for example  i have 4 ids in my project means 1 for vice  Chancellor and branding so for 
+  initializing ckeditor avoid for time writing store id's in ann array  like i will.
+4 . make object for store editor instance based on their id here id use as key so easily ckeditor will initialiaze.
+5. Promise.all() The Promise.all() static method takes an iterable of promises as input and returns a single Promise.
+then use mapped these array so it will return new array
+NOTE :::: in CkEditor Data will Go in form of html so when will fetch that data in ejs on that time use this <%- %> instead of this <%= %>
+so it will complie code based on html tag
+
+NOTE :: For fetch complete Data from related table we will use union method 
+NOTE ::: How To apply styles in fetched data when we are using ckeditor.
+ANSWER  ::::make class for css and inside this css use * universal class for apply what you want in the text background.
+=================================================================================================================================
+
+use eventListner for insert data into database by using fetch api
+make a table there make content accoprding to there data wise  and button for view;
+ table formate ===>>>
+ 
+from vc desk|| resesch || meeting-stackholder || branding || viewData
+Date        ||  Date   ||      Date           ||Date      || view-icon
+
+=================================================================================================================================
+
+How to give respose if file is not there or network issue to download files.
+If there is no file so provide for that user friendly massage we will use 
+try and catch in our script so it will be better to provide user friendly massage.
+after that by using promise all we will handle all exception at one point .
+so it will give only one time error massage if file is not there.
+and for solit our string by comma we will use map fuction instead of for loop and by using of map function will also boolean value aby using filter.
+so it will provide us user friendly code.
+
+===========================================================================
+// for set attribute tpo button for download file
+    function setFileNameInButtons(result) {
+        console.log('result ===>>>', result);
+        const pedagogyFile = document.getElementById('pedagogy-file-view');
+        const FdpFile = document.getElementById('fdp-file-data-view');
+        const workShopDataFile = document.getElementById('work-shop-file-view');
+        const invitingFile = document.getElementById('inviting-file-view');
+        const orientationFile = document.getElementById('orientation-file-view');
+        pedagogyFile.setAttribute('data-filename' , result.teachingExecellanceView.pedagogy_innovation_file);
+        FdpFile.setAttribute('data-filename' , result.teachingExecellanceView.fdp_program_file)
+        workShopDataFile.setAttribute('data-filename' , result.teachingExecellanceView.workshop_file);
+        invitingFile.setAttribute('data-filename' , result.teachingExecellanceView.inviting_faculty_file);
+        console.log('invitingFile ===>>>::::', invitingFile)
+        orientationFile.setAttribute('data-filename' , result.teachingExecellanceView.program_orientation_file);
+        console.log('pedagogyFile in side setFileNameInButtons  ==>>', pedagogyFile);
+        console.log('workShopDataFile ==>>::::', workShopDataFile);
+        }
+ 
+
+===========================================================================
+
+this is conde for download file and provide maasage also  ======
+
+===========================================================================
+   document.addEventListener('click', async function (event) {
+            const button = event.target.closest('button');
+            if (button && button.id && button.classList.contains('download-file')) {
+                console.log('button ===>>>', button)
+                try {
+                    const fileDataString = button.getAttribute('data-filename');
+                    if (!fileDataString) {
+                        throw new Error('Data filename attribute not found on button.');
+                    }
+
+                    const fileArray = fileDataString.split(',').map(fileName => fileName.trim()).filter(Boolean); 
+                    if (fileArray.length === 0) {
+                        throw new Error('No file names found in data filename attribute.');
+                    }
+
+                    const downloadPromises = fileArray.map(async (fileName) => {
+                        console.log('fileName ===>>>', fileName)
+                        const fileUrl = `<%- BASE_URL %>teaching-excellance/download/${fileName}`;
+                        downloadFile(fileName, fileUrl)
+                        try {
+                            const response = await fetch(fileUrl);
+                            if (!response.ok) {
+                                throw new Error(`Failed to download file: ${fileName}`);
+                            }
+                            console.log('File downloaded successfully:', fileName);
+                            return fileName;
+                        } catch (error) {
+                            console.error('Error downloading file:', error);
+                            throw error;
+                        }
+                    });
+
+                    const downloadedFiles = await Promise.all(downloadPromises);
+                    console.log('All files downloaded successfully:', downloadedFiles);
+                } catch (error) {
+                    console.error('Error downloading files:', error);
+                    alert(`There was a problem downloading files: ${error.message}`);
+                }
+            }
+        });
+		
+===========================================================================
+function for download file or other documents by using fetch api
+===========================================================================
+function downloadFile(fileName, fileUrl) {
+  console.log("fileName in side public folder ==>>", fileName);
+  console.log("file url in side public folder ==>>", fileUrl);
+  fetch(fileUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.blob();
+    })
+    .then((blob) => {
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
+    });
+}
+
+=================================================================================================================================
+How To Add Custom plugins in ckeditor toolbar and how to apply there class and style >>>>> """"""
+
+for adding custom addon plugins in tool bar in ckeditor
+1. 
+      // Function to create a button with a label and icon class hthis function will create button and add therir class.
+      function createButton(label, iconClass) {
+          const button = document.createElement('button');
+          button.innerHTML = label;
+          button.classList.add('ck-button'); // Adding CKEditor button class
+          const icon = document.createElement('span');
+          icon.classList.add('ck-icon', iconClass); // Adding CKEditor icon class
+          button.appendChild(icon);
+          return button;
+        }
+2. // Adding a button with an icon to the toolbar ck editor toolbar
+          editor.ui.getEditableElement().parentElement.insertBefore(
+            editor.ui.view.toolbar.element,
+            editor.ui.getEditableElement()
+          );
+3.  // Create a button element
+          const buttonElement = document.createElement('button');
+          buttonElement.classList.add('ck', 'ck-button', 'ck-off');
+          buttonElement.type = 'button';
+          buttonElement.tabIndex = '-1';
+
+          // Add ARIA attributes
+          buttonElement.setAttribute('aria-labelledby', 'ck-editor__aria-label_e0d2de3a778d1fd978e3d5ef78eb2a327');
+          buttonElement.setAttribute('aria-pressed', 'false');
+          buttonElement.setAttribute('data-cke-tooltip-text', 'Time&Date');
+          buttonElement.setAttribute('data-cke-tooltip-position', 's');
+
+          // Create an imgElement element
+          const imgElement = document.createElement('img');
+          imgElement.src = '<%- BASE_URL %>icons/timestamp.png';
+          imgElement.setAttribute('class', 'ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon');
+          imgElement.setAttribute('viewBox', '0 0 20 20');
+
+          // Create the path for the SVG icon
+          const pathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          pathElement.setAttribute('d', 'M7 16.4c-.8-.4-1.5-.9-2.2-1.5a.6.6 0 0 1-.2-.5l.3-.6h1c1 1.2 2.1 1.7 3.7 1.7 1 0 1.8-.3 2.3-.6.6-.4.6-1.2.6-1.3.2-1.2-.9-2.1-.9-2.1h2.1c.3.7.4 1.2.4 1.7v.8l-.6 1.2c-.6.8-1.1 1-1.6 1.2a6 6 0 0 1-2.4.6c-1 0-1.8-.3-2.5-.6zM6.8 9 6 8.3c-.4-.5-.5-.8-.5-1.6 0-.7.1-1.3.5-1.8.4-.6 1-1 1.6-1.3a6.3 6.3 0 0 1 4.7 0 4 4 0 0 1 1.7 1l.3.7c0 .1.2.4-.2.7-.4.2-.9.1-1 0a3 3 0 0 0-1.2-1c-.4-.2-1-.3-2-.4-.7 0-1.4.2-2 .6-.8.6-1 .8-1 1.5 0 .8.5 1 1.2 1.5.6.4 1.1.7 1.9 1H6.8z');
+
+          // Append the pathElement to the imgElement element
+          imgElement.appendChild(pathElement);
+
+          // Append the imgElement to the button element
+          buttonElement.appendChild(imgElement);
+
+          // span element for the text content
+          const spanElement = document.createElement('span');
+          spanElement.classList.add('ck', 'ck-button__label');
+          spanElement.textContent = 'Time&Date';
+
+          // append the text content to the button element
+          buttonElement.appendChild(spanElement);
+
+          // add time and date property
+          buttonElement.addEventListener('click', function () {
+            insertDateTime(editor); // Call your function when the button is clicked
+          });
+
+          // Append the button to wherever you want it in the document
+          editor.ui.view.toolbar.element.appendChild(buttonElement);
+
+
+        })
+by using these three step we can easily add custom plugin in our editor
+
+NOTE :::: make a function for create button pass editor as argument in the function
+         created button and add classlist band setattribute  into the icon
+NOTE ::: for specifying related button property we will use eventlistner in button there we will initialize what property we want set into button.
+
+=================================================================================================================================
+additing data field into editor 
+in input field simply we will make type date.
+so with object we will send this date data also.
+by using fetch api.
+=================================================================================================================================
+
+
+
+
+
+
