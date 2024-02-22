@@ -81,7 +81,21 @@ research ====
 			
 
 
+================================================================================================
+Crud operation in node js
+INSERT =====>>>>
+TO INSERT data from template to backed in data base 
+simple we will use fetch api 
+so by using object or by using formData we will send data from frontend into backed by using fetch api
+NOTE : when we sentd data by using formData so in that time we will use means append value as key value pair and in this case we can not 
+   use in fetch api body json.stringyfy WE CAN simply send our object
+NOTE :
+	without formData we will sent data from fromtend by using json.stringyfy(object).
+DELETE
+UPDATE
+VIEW
 
+================================================================================================
 
 1 ==>>>Update multiple files  file updation when we are using multiple file on that time some file update wher file are exist 
 in view check if file is ther then append that file with formData otherwise in else block make that file null and append with formData
@@ -377,8 +391,187 @@ so with object we will send this date data also.
 by using fetch api.
 =================================================================================================================================
 
+CREATE TABLE WHOSE ID INCREMENT DATEWISE(POSTGRESQL)
+Now i'm in 
+   [{data : [a,b,c]}]
+
+ make an array like dataContainerArray = [{}]
+						means 
+						dataContainerArray = [{date : [	{'vc' : [a,b,c]},
+														{'research' : [a,b,c]},
+														{'meeting' : [a,b,c]},
+														{'branding' : [a,b,c]},
+											 {date : [	{'vc' : [a,b,c]},
+														{'research' : [a,b,c]},
+														{'meeting' : [a,b,c]},
+														{'branding' : [a,b,c]},];
+
+
+=================================================================================================================================
+
+in vcDataObject 
+i want 
+{data : {vc: [a,b,c]}}
+NOW I AM IN 
+[ { '21/2/2024': [] }, { '3/2/2024': [] } ]
+
+I WANT 
+
+[ { '21/2/2024': [
+				  {'VC' : [A, B ,C]},
+				  {'RESEARCH' : [A, B ,C]},
+				  {'MEETING' : [A, B ,C]},
+				  {'BRANDING' : [A, B ,C]}] },
+	{ '3/2/2024': [
+				{'VC' : [A, B ,C]},
+				  {'RESEARCH' : [A, B ,C]},
+				  {'MEETING' : [A, B ,C]},
+				  {'BRANDING' : [A, B ,C]}] },]} ]
+				  
+				  
+NOW I AM IN { vc: [] }
+I WANT { vc: [A,B,C] }
+
+
+NOW I AM IN [ { '21/2/2024': { vc: [Array] } }, { '3/2/2024': { vc: [Array] } } ]
+THIS IS DESIRE I WANT BUT I WANT RETRIVR VALUE SO THERE IT WILL NOT SHOW 
+LIKE [Array]
 
 
 
+Now i am in 
+dateWiseDataContainer in service ====>>> [
+  { '21/2/2024': { vc: [Array] } },
+  { '3/2/2024': { vc: [Array] } },
+  { '21/2/2024': { research: [Array] } },
+  { '6/2/2024': { research: [Array] } },
+  { '21/2/2024': { meeting: [Array] } },
+  { '17/2/2024': { meeting: [Array] } },
+  { '21/2/2024': { branding: [Array] } },
+  { '17/2/2024': { branding: [Array] } },
+  { '24/2/2024': { branding: [Array] } }
+]
 
+
+Completed 
+
+module.exports.renderChronicleEdition = async(req, res, next) => {
+    const renderVcEditorData = await chronicleModels.fetchEditorData();
+    // console.log('renderVcEditorData ===::::::>>>>>', renderVcEditorData.rows)
+    const modelDataContainerArray = renderVcEditorData.rows;
+    // console.log('modelDataContainerArray ====>>>>', modelDataContainerArray)
+    const dataByTableAndDate = {};
+
+    // Group editor_data by table_name and id
+    modelDataContainerArray.forEach((data) => {
+      const { table_name, id, editor_data, date} = data;
+    //   console.log('data in controller ===>>>', data)
+      if (!dataByTableAndDate[table_name]) {
+        dataByTableAndDate[table_name] = {};
+      }
+      if (!dataByTableAndDate[table_name][date]) {
+        dataByTableAndDate[table_name][date] = [];
+      }
+    // dataByTableAndDate[table_name][id].push( date );
+
+    dataByTableAndDate[table_name][date].push( editor_data );
+    });
+    // console.log('dataByTableAndDate ====.>>', dataByTableAndDate)
+    // databyData(dataByTableAndDate)
+
+    // console.log('dataByTableAndDate ==>>>', dataByTableAndDate.vc_editor_table);
+    const vcEditorData = dataByTableAndDate.vc_editor_table;
+    const brandingEditorData = dataByTableAndDate.branding_editor_table;
+    const meetingEditorData = dataByTableAndDate.meeting_editor_table;
+    const researchEditorData = dataByTableAndDate.research_editor_table;
+
+    const dataContainerArray = [
+      vcEditorData,
+      researchEditorData,
+      meetingEditorData,
+      brandingEditorData,
+    ];
+    const headingKey = ["VC", "RESEARCH", "MEETING", "BRANDING"];
+
+    var dateWiseDataContainer = [];
+
+    // Iterate over each type of data
+    for (let i = 0; i < dataContainerArray.length; i++) {
+      const editorData = dataContainerArray[i];
+      const heading = headingKey[i];
+
+      for (const key in editorData) {
+        const date = new Date(key);
+        const formattedDate = date.toLocaleDateString("en-IN");
+
+        // Check if the date exists in the container, if not create a new object
+        let dateObject = dateWiseDataContainer.find(
+          (obj) => obj[formattedDate]
+        );
+        if (!dateObject) {
+          dateObject = { [formattedDate]: [] };
+          dateWiseDataContainer.push(dateObject);
+        }
+
+        // Find or create an object for this heading
+        let headingObject = dateObject[formattedDate].find((obj) =>
+          obj.hasOwnProperty(heading)
+        );
+        if (!headingObject) {
+          headingObject = {};
+          headingObject[heading] = editorData[key];
+          dateObject[formattedDate].push(headingObject);
+        } else {
+          headingObject[heading].push(...editorData[key]);
+        }
+      }
+    }
+        
+    chronicleDataByDate(dateWiseDataContainer)
+    return dateWiseDataContainer
+    
+}
+
+
+
+FRO FRONTEND 
+<% dateWiseDataContainer.forEach(dateEntry => { %>
+                    <% for (const date in dateEntry) { %>
+                        <h5><%- date %></h5>
+                        <ul class="text-content">
+                            <% dateEntry[date].forEach(data => { %>
+                                <% for (const category in data) { %>
+                                    <li><%- category %>: <%- data[category].join(', ') %></li>
+                                <% } %>
+                            <% }) %>
+                        </ul>
+                    <% } %>
+                <% }) %>
+
+Bu using of this 
+
+
+dateWiseDataContainer in page controller ===>>> [
+  { '21/2/2024': [ [Object], [Object], [Object], [Object] ] },
+  { '3/2/2024': [ [Object] ] },
+  { '25/2/2024': [ [Object], [Object], [Object], [Object] ] },
+  { '6/2/2024': [ [Object] ] },
+  { '17/2/2024': [ [Object], [Object] ] },
+  { '24/2/2024': [ [Object] ] }
+]
+
+this is desired output
+
+=================================================================================================================================
+MAKE LIST OF CHRONICLE EDITON
+
+HOW LOOK WILL SHOW IN FROM CHRONICLE EDITION
+1 | VC | CREATED DATE BY | UPDATED BY | ACTIONES
+2 | RESEARCH | 21/2/2024 | 25/2/2024| VIEW EDIT DELETE
+3 | RESEARCH | 24/2/2024 | 25/2/2024 | VIEW EDIT DELETE
+4 | MEETING | CREATED BY | UPDATED BY | VIEW EDIT DELETE
+4 | BRANDING | CREATED BY | UPDATED BY | VIEW EDIT DELETE
+
+
+=================================================================================================================================
 
