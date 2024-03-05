@@ -574,4 +574,418 @@ HOW LOOK WILL SHOW IN FROM CHRONICLE EDITION
 
 
 =================================================================================================================================
+ I WANT STORE DATA AS IN AN Array
+ AS [ID, 'VCOFFICE', CREATED DATE, UPDATED DATE,  ID, 'VCOFFICE', CREATED DATE, UPDATED DATE]
+=================================================================================================================================
 
+Formatted Data: [
+     [1, 'VCOFFICE', '22/2/2024', '22/2/2024',],
+     [ 2, 'VCOFFICE', '23/2/2024', '23/2/2024']
+  
+]
+
+chronicleEditorData Data ==>>>: [
+  [ 1, 'VCOFFICE', '22/2/2024', '22/2/2024' ],
+  [ 2, 'VCOFFICE', '23/2/2024', '23/2/2024' ]
+]
+
+I WANT DATA IN CHRONICLE DATA IN FORMATE
+
+chronicleEditorData Data ==>>>: [
+  [ 1, 'VC Office', '22/2/2024', '22/2/2024' ],
+  [ 2, 'Research', '23/2/2024', '23/2/2024' ],
+  [ 1, 'Meeting Stakeholders Aspiration', '22/2/2024', '22/2/2024' ],
+  [ 2, 'Branding', '23/2/2024', '23/2/2024' ],
+  [ 1, 'Research', '22/2/2024', '22/2/2024' ],
+  [ 2, 'VC Office', '23/2/2024', '23/2/2024' ]
+]
+
+chronicleEditorData Data ==>>>: [
+  [
+    [ 1, 'VC Office', '22/2/2024', '22/2/2024' ],
+    [ 2, 'VC Office', '23/2/2024', '23/2/2024' ]
+  ],
+  [ [ 1, 'Research', '22/2/2024', '22/2/2024' ] ],
+  [
+    [ 1, 'Meeting Stakeholders Aspiration', '22/2/2024', '22/2/2024' ]
+  ],
+  [ [ 1, 'Branding', '22/2/2024', '22/2/2024' ] ]
+]
+
+FOR GETTING ABOVE DATA WE WILL USE 
+ const chronicleEditorData = [];
+  
+  // function for frmate date and time
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
+  // type  of editor container array
+  const typeContainerArray = [
+    'VC Office',
+    'Research',
+    'Meeting Stakeholders Aspiration',
+    'Branding'
+  ];
+	
+	// for vc data THIS DATA COMMING FROM DATABASE
+  const vcOfficeEditor = chronicleData.fetchVcOfficeData;
+  const vcOfficeData = vcOfficeEditor.rows;
+
+  // for research editor THIS DATA COMMING FROM DATABASE
+  const researchEditor = chronicleData.fetchResearchData;
+  const researchData = researchEditor.rows;
+  // for meetingEditor THIS DATA COMMING FROM DATABASE
+  const meetingEditor = chronicleData.fetchMeetingData;
+  const meetingData = meetingEditor.rows;
+  // console.log('meetingData ===>>', meetingData);
+
+  // for brandingEditor THIS DATA COMMING FROM DATABASE
+  const brandingEditor = chronicleData.fetchBrandingData;
+  const brandingData = brandingEditor.rows;
+  // console.log('brandingEditor ===>>>>', brandingData)
+  //editor date container array
+  const dataContainerArray = [vcOfficeData, researchData, meetingData, brandingData];
+  // append data in chronicleEditorData 
+  for (let i = 0; i < dataContainerArray.length; i++) {
+    const relatedEditorData = dataContainerArray[i];
+    
+    for (const item of relatedEditorData) {
+      const type = typeContainerArray[i];
+      chronicleEditorData.push([item.id, type, formatDate(item.date), formatDate(item.updated_at)]);
+    }
+  }
+
+  // sort chronicleEditorData by date 
+  function sortByDate(a, b) {
+    const dateA = new Date(a[3].split('/').reverse().join('/')); 
+    const dateB = new Date(b[3].split('/').reverse().join('/'));
+    return dateA - dateB;
+  };
+
+  chronicleEditorData.sort(sortByDate);
+  console.log('chronicleEditorData Data ==>>>:', chronicleEditorData);
+  
+=================================================================================================================================
+SIMPLY FOR GET THIS DATA SEPATED THOSE DATA COMING FROM DATABASE 
+SO THERE HOW MANY TABLE SIMPLY WE CAN SEPARTE THOSE TABLE
+STORE THESE TABLE DATA IN TO AN CONTAINER ARRAY AS WANT BASED ON THIS DATA DISPLAY WHATEVER YOU WANT 
+=================================================================================================================================
+COMPLETED :::::::::::::::::::::::::::::
+
+PROBLEM ==== MENTIONED ALSO CREATED BY IN DATABSE TABLE :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ALTER TABLE branding_editor_table
+ADD COLUMN created_by VARCHAR(255); THIS QUERY IS USE ADD COLUME IN EXITING TABLE
+
+COMPLETED:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+PROBLEM ::: MAKE VIEW BASED ON ID THERE WILL BE USE ANCHOR TAG FOR LINK THE PAGE :::::::::::::::::::::::::::::::::::::::::::::
+chronicleEditorData Data ==>>>: [
+  [
+    [ 1 , 'ANKIT MISHRA' ],
+    [ 2 , 'AJAY MISHRA' ]
+  ],
+  [ [ 1 , 'AVINASH' ] ],
+  [
+    [ 1 , 'HARSHAL' ]
+  ],
+  [ [ 1 , 'RAJKUMAR' ] ]
+]
+
+SO BASED ON ID WE WANT LINK VIEW PAGE 
+
+
+FROM DATA BASE RETURN AND NAME OG CREATED_BY SO IT WILL BE EASY FOR STORE NAME ALSO IN FRONTEND
+
+[[ 1, 'hjhgjhjkhj'], [ 2, 'hjhgjhjkhj'], [ 2, 'hjhgjhjkhj'], [ 1, 'hjhgjhjkhj']]
+
+
+chronicleEditorData Data ==>>>: [
+  [ 1, 'VC Office', undefined, '18/2/2024', '23/2/2024' ],
+  [ 1, 'Research', undefined, '23/2/2024', '23/2/2024' ],
+  [
+    1,
+    'Meeting Stakeholders Aspiration',
+    undefined,
+    '23/2/2024',
+    '23/2/2024'
+  ],
+  [ 1, 'Branding', undefined, '23/2/2024', '23/2/2024' ],
+  [ 2, 'VC Office', undefined, '25/2/2024', '23/2/2024' ]
+]
+
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ <% chronicleEditorData.forEach(item => { %>
+                        <li>
+                            <p>ID: <%- item[0] %></p>
+                            <p>Type: <%- item[1] %></p>
+                        </li>
+                    <% }); %>
+THIS WILL BE USED FOR GENERATING 7 DAYS FOR ONE Chronicle
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+                                  <a href="<%- BASE_URL %>chronicle-page?id=<%= chronicleEditorData[i][0] %>">
+								  data-chronicle-id
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+1  	CHRONICLE EDITION PAGE COMPLETE SO FOR ITS INTIALIZATION WE MAKE AS WHERE YOU WANT INTIALIZE EDITOR 
+	I WANT 4 EDITOR SO SYMPLY I STOREED ID IN AN ARRAY BY USING LOOP BASED ON ID WE WILL INITIALIZE EDITOR
+	AFTER INTITIALIZATION COMPLETED FOR VIEW UPDATE DELETE AND INSERT WE WILL FOLLOW SIMPLE PROCESS
+	SAME WE ALREDY DID FOR CRUD OPERATION.
+ 
+1  	USE LINK FOR VIEW PAGE WITHOUT USING ANCHER TAG BY USING FETCH API WE CAN DO IT
+	THIS THE WE TO LINK A PAGE 
+	window.location.href = `<%- BASE_URL %>chronicle-page/textdata/${editorText}/id/${chronicleId}`;
+	textdata/${editorText} THIS USED FOR IEDNTIFICATION.
+	
+	
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+==========================================================================================================================================
+HOW TO MAKE CALCULATION AND BASED ON THAT CALCULATION HOW TO GENERATE INCENTIV AND HOW WE MAKE 
+ANALYSIS
+
+
+
+==========================================================================================================================================
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::	
+ NOTE :::: IF WE HAVE MULTIPLE BUTTON STORE BUTTON IN AN ARRAY USE FOREACH LOOP
+ FOR MAKING BUTTON D-NONE OR REMOVING D-NONE.
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ 
+ :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+ ========================================================================================================================================
+ HOW TO MAKE INCENTIVE PAGE 
+ HOW TO CREATE BONUS 
+ BASED ON THAT BONUS CREATE VISUALIZATION
+ 
+ 
+ 
+ 1.  CREATE A PAGE FOR ADMIN BECUASE ADMIN WILL ONLYY HAVE AUTHORITY
+	 TO GIVE INCENSTIVE AND BONUS TO THE EMPLOYEEE.
+	  
+ 2.  BASED ON PERFORMANCE ADMIN WILL GENERATYE BONUS AND INCENTIVE TO THE EMPLOYEEE.
+ 
+ 3. BASED ON INCENTIVE VISULIZE DATA COMPLARING  TO OTHER SCHOOL INCENTIVE DATA .
+ 
+ 
+ 4.  HOW MAKE THESE
+	CREATE AN EJS PAGE WHERE 
+	
+	
+=================================================================================================================================================
+HOW TO SET DROP DOWN LIST  IN RADIO BUTTON IF FACULTY CHOOSEN ENETER TYPE
+
+NOTICE POINT 1. ===:::::::: HOW TO SET DROP DOWN LIST  IN RADIO BUTTON IF FACULTY CHOOSEN ENETER TYPE
+				SOLUTION ====:::
+							   CREATE TABLE INTO DATA BASE THEN USE SET THAT TABLE WHEN WE OPEN MODAL FORM IF WE CLICK IN RADION BUTTON ENTERNAL
+							   TYPE THEN ONLY OUR DROP DOWN LIST WILL VISIBLE.
+NOTICE POINT 2. ===:::::::: IF FACULTY CHOOSE EXTERNAL THEN DROP DOWN SHOULD NOT BE VISIBLE 
+                            THEN THERE A WINDOW SHOULD BE OPEN WHERE WE CAN ADD FACULTY .
+				SOLUTION ==:: OPEN A MODAL THERE ARE FIELDS THAT WILL INSERT DATA INTO DATA BASE.
+				
+				
+				I HAVE TWO TABLE IF AUTHOR ENTERNAL DATA SHULD INSERT IN PATENT TABLE.
+				IF AUTHOR EXTERNAL THEN DATA SHOULD INSERT PATENT TABLE AS WILL AS IN EXTERNAL TABLE
+				COMPLETED SO FOR THIS WE WILL MAKE FUNCTION 
+				THIS IS THE WAY WE FOLLOW FOR THIS 
+				MAKE AN FUNCTION WHERE FORMdATA OBJECT AND RELATED VALUE WILL TAKE AS AN ARGUMENTS 
+				SHOW NOW SET THE VALUE ACCORDING TO THEIR PRESENCE BASED ON INTER EXTERNAL
+				  // function for add drop down list or  add new faculty data
+				  
+				  
+				   async function enternalFacultyDropDown(authorType, patentData){
+						console.log('authorType in side my function ====>>>', authorType);
+						console.log('enternalAuthorValue ====>>>>>', enternalAuthorValue);
+
+					   const presentertype = authorType.value;
+					   console.log('presentertype ===>>>', presentertype);
+					   if (presentertype === 'Internal') {
+						   console.log('storedSelectedValue inside my function ======', enternalAuthorValue);
+						   externalAuthorValue = '';
+						   patentData.append('internalAuthors', enternalAuthorValue);
+					   } else {
+						   console.log('externalAuthorValue inside function ===>>>', externalAuthorValue);
+						   patentData.append('externalAuthors', externalAuthorValue);
+						   enternalAuthorValue = ''; 
+					   }
+					}
+
+					// fuction for updated faculty type
+					async function updateAuthorType(updatedIs_Presenter, updatedPatentData){
+
+						console.log('updatedIs_Presenter in side my function ====>>>', updatedIs_Presenter);
+						// const authorType = updatedIs_Presenter.value;
+						// console.log('authorType ===>>>', authorType);
+						('storedFacultyValue ===>>>', storedFacultyValue)
+						console.log('updatedIs_Presenter ====>>>', updatedIs_Presenter);
+						if (!externalAuthorValue && !enternalAuthorValue) {
+							updatedPatentData.append('authorName', storedFacultyValue);
+						} else if (updatedIs_Presenter === 'Internal') {
+							console.log('storedSelectedValue inside my function =>', enternalAuthorValue);
+							externalAuthorValue = '';
+							updatedPatentData.append('internalAuthors', enternalAuthorValue);
+						} else {
+							console.log('externalAuthorValue inside function ===>>>', externalAuthorValue);
+							updatedPatentData.append('externalAuthors', externalAuthorValue);
+							enternalAuthorValue = '';
+						}
+					}
+
+					// EVENT LIST THAT WILL USE USE TO OPEN DROP DOWN LIST  
+					const externaltype = document.querySelector('.external-faculty');
+					const enternalFacultyType = document.getElementById('is-internal');
+					const externalFacultyType = document.getElementById('is-external');
+					const employeeList = document.getElementById('employee-list');
+					const authorDetails = document.getElementById('author-details');
+
+					const enternalText = document.getElementById('enternal-text');
+					// making d-none external faculty
+					enternalFacultyType.addEventListener('click' , (event) => {
+						console.log('clicked ::::::::::::');
+						// externaltype.classList.add('d-none');
+						// enternalText.classList.add('d-none');
+						employeeList.classList.remove('d-none');
+						authorDetails.classList.add('d-none');
+
+					})
+					//making d-none internal faculty
+					externalFacultyType.addEventListener('click' , (event => {
+						console.log('clciked ====');
+						employeeList.classList.add('d-none');
+						authorDetails.classList.remove('d-none');
+					}))
+
+					// employeesListData data came from backend
+					const employeesListData = document.getElementById('employeesListData').dataset.employees;
+					const employeesDataObj = JSON.parse(employeesListData);
+					let employeeListArray = [];
+
+				   
+					console.log(employeesDataObj);
+					// ajax for search bar to search employee name 
+					new TomSelect("#emp-name");
+				  
+					const employeeDropdown = document.getElementById("emp-name");
+					employeeDropdown.addEventListener("change", function() {
+						 const selectedValue = this.value;
+						 enternalAuthorValue = selectedValue;
+						console.log("enternalAuthorValue value:", enternalAuthorValue);
+						
+					});
+
+
+
+					
+					const addMoreDetailsButton = document.getElementById("add-more-details");
+					let authorName
+					let storedSelectedValue;
+					var enternalAuthorValue;
+					var externalAuthorValue;
+					let additionalDetails = []; 
+					//event listner for store external value
+					addMoreDetailsButton.addEventListener('click' , (event) => {
+						console.log('clickeddddd')
+						
+						const authorNameInput = document.getElementById("author-name");
+						authorName = authorNameInput.value;
+						console.log('authorNameInput ===>>>>', authorNameInput.value)
+						externalAuthorValue = authorNameInput.value;
+						console.log('storedSelectedValue inside external listner ===>>>', externalAuthorValue);
+					   
+
+					 
+					})
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+HOW TO UPDATE THIS DROPDOWN LIST OR AUTHOR DETAILS
+
+NOTICE POINT ===::: HOW USER  CAN UNDERSTAND WHAT BUTTON BELONGS TO WHICH TYPE OF RADIO BUTTON
+					MEANS HOW WE CAN IDENTIFY IN RADIO BUTTON WHICH TYPE IS EXTERNAL WHICH TYPE IS ENTERNAL
+					BECUASE WE HAVE HERE VALUE SELECTED FROM DROP DOWN LIST OR BY ADD AUTHOR DETAILS SO HOW WE CAN IDENTIFY
+					
+					PROBLEM 1: HOW TO IDENTIFY BASED ON VALUE TO THEIR TYPE  
+					SOLUTION : 
+								
+								
+								
+								[{}, {}]
+					authorNameArray =====>>>>>> [
+										  'Ankit',     'undefined',
+										  'undefined', 'Sarah',
+										  'Sarah',     'undefined',
+										  '',          '',
+										  'Alice',     'undefined',
+										  null,        'Harshal',
+										  'Alice'
+										]
+										
+					INTERNAL_TABLE [{1,'Alice'}, {1,'Sarah'}]
+					
+					const EXTERNAL_TABLE = [{1, 'Ankit'}, {2,'undefined'}, {3'undefined'}, {4,null}, {5,'Harshal'}];
+
+					[
+					  { authorName: 'John', table: 'internalEmpList' },
+					  { authorName: 'Jane', table: 'internalEmpList' },
+					  { authorName: 'Alice', table: 'internalEmpList' },
+					  { authorName: 'Bob', table: 'internalEmpList' },
+					  { authorName: 'Emily', table: 'internalEmpList' }
+					  ];
+					  
+					  
+					  
+					  patentList =====>>>>> [
+					  {
+						id: 2,
+						type_of_invention: 'Design Registration',
+						title_of_invention: 'DataStrcuture',
+						patent_stage: 'Published',
+						sdg_goals: 'Quality Education',
+						application_no: 456,
+						date: 2024-03-08T18:30:00.000Z,
+						authorName: 'Ankit',
+						patent_file: 'logo (54).png,'
+					  },
+					  {
+						id: 8,
+						type_of_invention: 'Copy Right',
+						title_of_invention: 'DataStrcuture',
+						patent_stage: 'Published',
+						sdg_goals: 'Good Health and Well-being',
+						application_no: 456,
+						date: 2024-03-15T18:30:00.000Z,
+						authorName: 'undefined',
+						patent_file: 'logo (54).png,'
+					  },
+					  {
+						id: 9,
+						type_of_invention: 'Copy Right',
+						title_of_invention: 'Algorithem',
+						patent_stage: 'Published',
+						sdg_goals: 'Quality Education',
+						application_no: 456,
+						date: 2024-03-14T18:30:00.000Z,
+						authorName: 'undefined',
+						patent_file: 'Screenshot (3).png,'
+					  },
+					  {
+						id: 10,
+						type_of_invention: 'Copy Right',
+						title_of_invention: 'Algorithem',
+						patent_stage: 'Published',
+						sdg_goals: 'Quality Education',
+						application_no: 200,
+						date: 2024-03-16T18:30:00.000Z,
+						authorName: 'Sarah',
+						patent_file: 'logo (54).png,'
+					  }]
+
+					tr
+					<td class="is-presenter" data-author-table="internalEmpList">Ankit</td>
